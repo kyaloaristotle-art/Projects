@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - CyberHub Integrated Services & Online Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="products-page">
+    <header>
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/Logo.png" alt="CyberHub Logo">
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="playstation.html">PlayStation Zone</a></li>
+                    <li><a href="booking.html">Book Session</a></li>
+                    <li><a href="stations.html">Stations</a></li>
+                    <li><a href="service-requests.html">Service Requests</a></li>
+                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="pos.html">POS</a></li>
+                    <li><a href="expenses.html">Expenses</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="profile.html">My Profile</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-auth btn-login">Login</a>
+                    <a href="register.html" class="btn-auth btn-register">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="marketplace-main">
+        <!-- Marketplace Header -->
+        <div class="marketplace-header">
+            <div class="marketplace-search">
+                <input type="text" id="searchInput" placeholder="Search for products, brands and more..." onkeyup="filterProducts()">
+                <button class="search-btn">🔍</button>
+            </div>
+            <div class="marketplace-actions">
+                <a href="pos.html" class="cart-btn">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Marketplace Sidebar and Content -->
+        <div class="marketplace-container">
+            <!-- Sidebar -->
+            <aside class="marketplace-sidebar">
+                <div class="sidebar-section">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li class="category-item active" data-category="all" onclick="filterByCategory('all')">
+                            <span class="category-icon">📦</span>
+                            <span>All Products</span>
+                            <span class="category-count">18</span>
+                        </li>
+                        <li class="category-item" data-category="electronics" onclick="filterByCategory('electronics')">
+                            <span class="category-icon">🔌</span>
+                            <span>Electronics</span>
+                            <span class="category-count">12</span>
+                        </li>
+                        <li class="category-item" data-category="jewelry" onclick="filterByCategory('jewelry')">
+                            <span class="category-icon">💎</span>
+                            <span>Jewelry</span>
+                            <span class="category-count">6</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Price Range</h3>
+                    <div class="price-filter">
+                        <input type="number" id="minPrice" placeholder="Min" onchange="filterByPrice()">
+                        <span>-</span>
+                        <input type="number" id="maxPrice" placeholder="Max" onchange="filterByPrice()">
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Rating</h3>
+                    <div class="rating-filter">
+                        <label><input type="checkbox" onchange="filterByRating(4)"> ⭐⭐⭐⭐ & up</label>
+                        <label><input type="checkbox" onchange="filterByRating(3)"> ⭐⭐⭐ & up</label>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Condition</h3>
+                    <div class="condition-filter">
+                        <label><input type="checkbox"> New</label>
+                        <label><input type="checkbox"> Used</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="marketplace-content">
+                <div class="content-header">
+                    <div class="breadcrumbs">
+                        <a href="index.html">Home</a> / <span>Products</span>
+                    </div>
+                    <div class="results-info">
+                        <span id="resultsCount">18 results found</span>
+                        <select id="sortSelect" onchange="sortProducts()">
+                            <option value="default">Sort by: Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
+                            <option value="newest">Newest Arrivals</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Flash Deals Banner -->
+                <div class="flash-deals">
+                    <div class="flash-icon">⚡</div>
+                    <div class="flash-content">
+                        <h3>Flash Deals</h3>
+                        <p>Up to 50% off on selected items</p>
+                    </div>
+                    <div class="flash-timer">
+                        <span>02:45:30</span>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="marketplace-grid" id="productsGrid">
+                    <!-- Electronics Products -->
+                    <div class="marketplace-card" data-category="electronics" data-price="1500" data-name="Fridge Guards" data-rating="4.5" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge discount">-20%</span>
+                            <span class="badge hot">🔥 Hot</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">🔌</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Fridge Guards - Surge Protector</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(128)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 1,500</span>
+                                <span class="original-price">KES 1,875</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Fridge Guards', 1500)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="800" data-name="Memory Cards" data-rating="4.3" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge new">New</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">💾</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Memory Cards SD/microSD</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(89)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 800</span>
+                                <span class="original-price">KES 1,200</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 100</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Memory Cards', 800)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="300" data-name="Phone Covers" data-rating="4.7" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge best-seller">Best Seller</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">📱</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Phone Covers & Cases</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(256)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 300</span>
+                                <span class="original-price">KES 450</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Phone Covers', 300)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="500" data-name="Chargers" data-rating="4.2" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🔋</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Phone & Laptop Chargers</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(67)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 500</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 50</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Chargers', 500)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="1200" data-name="Power Banks" data-rating="4.6" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge discount">-15%</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">🔋</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Power Banks 10000mAh</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(189)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 1,200</span>
+                                <span class="original-price">KES 1,400</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Power Banks', 1200)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="400" data-name="Headphones" data-rating="4.4" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🎧</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Headphones & Earphones</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(145)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 400</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 80</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Headphones', 400)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="200" data-name="USB Cables" data-rating="4.1" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🔗</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">USB Cables & Cords</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(78)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 200</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 30</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('USB Cables', 200)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="500" data-name="Computer Accessories" data-rating="4.3" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">⌨️</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Computer Accessories Set</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(92)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 500</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 100</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Computer Accessories', 500)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="400" data-name="Flash Drives" data-rating="4.5" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge discount">-10%</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">💿</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">USB Flash Drives</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(134)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 400</span>
+                                <span class="original-price">KES 450</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Flash Drives', 400)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="300" data-name="Adapters" data-rating="4.0" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🔌</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Adapters & Converters</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(56)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 300</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 40</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Adapters', 300)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="200" data-name="Screen Protectors" data-rating="4.2" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">📱</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Screen Protectors</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(98)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 200</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 25</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Screen Protectors', 200)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="electronics" data-price="800" data-name="Extension Cables" data-rating="4.4" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🔌</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Extension Cables</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(71)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 800</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 150</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Extension Cables', 800)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Jewelry Products -->
+                    <div class="marketplace-card" data-category="jewelry" data-price="500" data-name="Necklaces" data-rating="4.6" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge new">New Arrival</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">📿</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Fashion Necklaces</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(112)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 500</span>
+                                <span class="original-price">KES 750</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Necklaces', 500)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="jewelry" data-price="300" data-name="Bracelets" data-rating="4.3" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">⚓</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Stylish Bracelets</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(87)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 300</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 50</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Bracelets', 300)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="jewelry" data-price="200" data-name="Earrings" data-rating="4.5" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge best-seller">Best Seller</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">💎</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Elegant Earrings</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(203)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 200</span>
+                                <span class="original-price">KES 300</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Earrings', 200)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="jewelry" data-price="400" data-name="Rings" data-rating="4.2" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">💍</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Fashion Rings</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(76)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 400</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 60</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Rings', 400)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="jewelry" data-price="1000" data-name="Watches" data-rating="4.7" data-seller="NewAge Cyber">
+                        <div class="card-badges">
+                            <span class="badge discount">-25%</span>
+                            <span class="badge hot">🔥 Hot</span>
+                        </div>
+                        <div class="card-image">
+                            <div class="product-icon">⌚</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Premium Watches</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
+                                <span class="rating-count">(287)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 1,000</span>
+                                <span class="original-price">KES 1,333</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 Free Delivery</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Watches', 1000)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-card" data-category="jewelry" data-price="250" data-name="Anklets" data-rating="4.1" data-seller="NewAge Cyber">
+                        <div class="card-image">
+                            <div class="product-icon">🦶</div>
+                            <div class="card-actions">
+                                <button class="action-btn wishlist">❤️</button>
+                                <button class="action-btn compare">🔄</button>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <div class="card-seller">NewAge Cyber</div>
+                            <h4 class="card-title">Decorative Anklets</h4>
+                            <div class="card-rating">
+                                <span class="stars">⭐⭐⭐⭐</span>
+                                <span class="rating-count">(54)</span>
+                            </div>
+                            <div class="card-price">
+                                <span class="current-price">KES 250</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="stock">In Stock</span>
+                                <span class="delivery">🚚 KES 35</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Anklets', 250)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more">
+                    <button class="load-more-btn">Load More Products</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Notification -->
+    <div class="cart-notification" id="cartNotification">
+        <span class="notification-icon">✅</span>
+        <span class="notification-text">Added to cart!</span>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+
+        let cart = [];
+        let currentFilter = 'all';
+
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('quickCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartCount();
+            }
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentFilter = category;
+            
+            // Update active category
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.category === category) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Filter products
+            const allProducts = document.querySelectorAll('.marketplace-card');
+            allProducts.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            updateResultsCount();
+        }
+
+        // Filter by price
+        function filterByPrice() {
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            
+            const allProducts = document.querySelectorAll('.marketplace-card');
+            allProducts.forEach(product => {
+                const price = parseFloat(product.dataset.price);
+                if (price >= minPrice && price <= maxPrice) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            updateResultsCount();
+        }
+
+        // Filter by rating
+        function filterByRating(minRating) {
+            const allProducts = document.querySelectorAll('.marketplace-card');
+            allProducts.forEach(product => {
+                const rating = parseFloat(product.dataset.rating);
+                if (rating >= minRating) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            updateResultsCount();
+        }
+
+        // Search products
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const allProducts = document.querySelectorAll('.marketplace-card');
+            
+            allProducts.forEach(product => {
+                const name = product.dataset.name.toLowerCase();
+                const category = product.dataset.category.toLowerCase();
+                const seller = product.dataset.seller.toLowerCase();
+                
+                if (name.includes(searchTerm) || category.includes(searchTerm) || seller.includes(searchTerm)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            updateResultsCount();
+        }
+
+        // Sort products
+        function sortProducts() {
+            const sortValue = document.getElementById('sortSelect').value;
+            const productsGrid = document.getElementById('productsGrid');
+            const products = Array.from(productsGrid.querySelectorAll('.marketplace-card'));
+            
+            products.sort((a, b) => {
+                switch(sortValue) {
+                    case 'price-low':
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    case 'price-high':
+                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    case 'rating':
+                        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                    case 'newest':
+                        return Math.random() - 0.5; // Random for demo
+                    default:
+                        return 0;
+                }
+            });
+            
+            products.forEach(product => productsGrid.appendChild(product));
+        }
+
+        // Update results count
+        function updateResultsCount() {
+            const visibleProducts = document.querySelectorAll('.marketplace-card:not([style*="display: none"])');
+            document.getElementById('resultsCount').textContent = `${visibleProducts.length} results found`;
+        }
+
+        // Add to cart
+        function addToCart(productName, price) {
+            const existingItem = cart.find(item => item.name === productName);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            // Save to localStorage
+            localStorage.setItem('quickCart', JSON.stringify(cart));
+            
+            // Update cart count
+            updateCartCount();
+
+            // Show notification
+            const notification = document.getElementById('cartNotification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize
+        loadCart();
+        updateResultsCount();
+    </script>
+</body>
+</html>

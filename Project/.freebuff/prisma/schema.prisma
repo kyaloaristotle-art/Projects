@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  phone           String?
+  passwordHash    String
+  role            String           @default("CUSTOMER") // CUSTOMER | ADMIN  (staff roles come in a later phase)
+  createdAt       DateTime         @default(now())
+  orders          Order[]
+  serviceRequests ServiceRequest[]
+  payments        Payment[]
+  sessions        Session[]
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  slug     String    @unique
+  emoji    String    @default("📦")
+  products Product[]
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  priceCents  Int
+  stock       Int         @default(0)
+  emoji       String      @default("📦")
+  active      Boolean     @default(true)
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+}
+
+model Service {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String?
+  category    String // CYBER | PRINTING | ONLINE | ACADEMIC | GAMING | OTHER
+  priceCents  Int? // null = price is quoted per request
+  unit        String? // e.g. "per page", "per hour"
+  active      Boolean          @default(true)
+  requests    ServiceRequest[]
+  createdAt   DateTime         @default(now())
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  userId         Int
+  user           User        @relation(fields: [userId], references: [id])
+  status         String      @default("PENDING") // PENDING | PAID | PROCESSING | READY | COMPLETED | CANCELLED
+  deliveryMethod String      @default("COLLECTION") // COLLECTION | DELIVERY
+  address        String?
+  phone          String
+  note           String?
+  totalCents     Int
+  items          OrderItem[]
+  payments       Payment[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model OrderItem {
+  id             Int     @id @default(autoincrement())
+  orderId        Int
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      Int
+  product        Product @relation(fields: [productId], references: [id])
+  name           String // snapshot of product name at purchase time
+  unitPriceCents Int
+  qty            Int
+}
+
+model ServiceRequest {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  serviceId   Int
+  service     Service   @relation(fields: [serviceId], references: [id])
+  details     String
+  status      String    @default("PENDING") // PENDING | QUOTED | PAID | IN_PROGRESS | COMPLETED | REJECTED
+  quotedCents Int?
+  adminNote   String?
+  payments    Payment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Payment {
+  id               Int             @id @default(autoincrement())
+  userId           Int
+  user             User            @relation(fields: [userId], references: [id])
+  orderId          Int?            @unique
+  order            Order?          @relation(fields: [orderId], references: [id])
+  serviceRequestId Int?            @unique
+  serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+  method           String // CASH | MPESA
+  reference        String? // M-Pesa confirmation code entered by customer/staff
+  amountCents      Int
+  status           String          @default("PENDING") // PENDING | CONFIRMED | REJECTED
+  createdAt        DateTime        @default(now())
+  confirmedAt      DateTime?
+}

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - CyberHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/Background.png);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        main {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            max-width: 1000px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .profile-info h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: #00bcd4;
+            color: #00bcd4;
+        }
+
+        .tab-btn.active {
+            background: #00bcd4;
+            color: #fff;
+            border-color: #00bcd4;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-section h3 {
+            color: #00bcd4;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .order-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-pending {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .order-details {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-items {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .order-total {
+            text-align: right;
+            font-weight: bold;
+            color: #00bcd4;
+            font-size: 1.1rem;
+        }
+
+        .request-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ddd;
+        }
+
+        .request-card.pending {
+            border-left-color: #ff9800;
+        }
+
+        .request-card.in-progress {
+            border-left-color: #2196F3;
+        }
+
+        .request-card.completed {
+            border-left-color: #4CAF50;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .request-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .request-details {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0097a7, #00838f);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #666;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/Logo.png" alt="CyberHub Logo">
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="playstation.html">PlayStation Zone</a></li>
+                    <li><a href="booking.html">Book Session</a></li>
+                    <li><a href="stations.html">Stations</a></li>
+                    <li><a href="service-requests.html">Service Requests</a></li>
+                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="pos.html">POS</a></li>
+                    <li><a href="expenses.html">Expenses</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-auth btn-login">Login</a>
+                    <a href="register.html" class="btn-auth btn-register">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <div class="profile-info">
+                <h2 id="profileName">User Name</h2>
+                <p id="profileEmail">user@example.com</p>
+                <p id="profileRole" style="color: #00bcd4; font-weight: 500;">Customer</p>
+            </div>
+        </div>
+
+        <div class="profile-tabs">
+            <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="showTab('orders')">Order History</button>
+            <button class="tab-btn" onclick="showTab('requests')">Service Requests</button>
+            <button class="tab-btn" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="tab-overview">
+            <div class="info-section">
+                <h3>Account Information</h3>
+                <div class="info-row">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value" id="overviewName">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id="overviewEmail">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Phone</span>
+                    <span class="info-value" id="overviewPhone">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Member Since</span>
+                    <span class="info-value" id="overviewJoined">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Account Type</span>
+                    <span class="info-value" id="overviewRole">-</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Activity Summary</h3>
+                <div class="info-row">
+                    <span class="info-label">Total Orders</span>
+                    <span class="info-value" id="totalOrders">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Total Service Requests</span>
+                    <span class="info-value" id="totalRequests">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Total Spent</span>
+                    <span class="info-value" id="totalSpent">KES 0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div class="tab-content" id="tab-orders">
+            <div id="ordersList">
+                <div class="empty-state">
+                    <div class="icon">📦</div>
+                    <p>No orders yet. Start shopping to see your orders here!</p>
+                    <a href="products.html" class="btn btn-primary" style="margin-top: 15px; display: inline-block; text-decoration: none;">Browse Products</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Requests Tab -->
+        <div class="tab-content" id="tab-requests">
+            <div style="margin-bottom: 20px;">
+                <button class="btn btn-primary" onclick="showNewRequestForm()">+ New Service Request</button>
+            </div>
+            <div id="newRequestForm" style="display: none; margin-bottom: 20px;">
+                <div class="info-section">
+                    <h3>Submit a Service Request</h3>
+                    <form id="customerRequestForm">
+                        <div class="form-group">
+                            <label for="reqService">Service Type</label>
+                            <select id="reqService" required>
+                                <option value="">Select a service</option>
+                                <option value="printing">Printing</option>
+                                <option value="scanning">Scanning</option>
+                                <option value="photocopy">Photocopying</option>
+                                <option value="typing">Typing & Formatting</option>
+                                <option value="kra">KRA Services</option>
+                                <option value="helb">HELB Services</option>
+                                <option value="ecitizen">eCitizen Services</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reqDescription">Description</label>
+                            <input type="text" id="reqDescription" required placeholder="Describe what you need">
+                        </div>
+                        <div class="form-group">
+                            <label for="reqNotes">Additional Notes</label>
+                            <input type="text" id="reqNotes" placeholder="Any special instructions...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideNewRequestForm()" style="margin-left: 10px;">Cancel</button>
+                    </form>
+                </div>
+            </div>
+            <div id="requestsList">
+                <div class="empty-state">
+                    <div class="icon">📋</div>
+                    <p>No service requests yet. Submit your first request!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="tab-settings">
+            <div class="info-section">
+                <h3>Update Profile</h3>
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="settingsName">Full Name</label>
+                        <input type="text" id="settingsName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsPhone">Phone Number</label>
+                        <input type="tel" id="settingsPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsEmail">Email</label>
+                        <input type="email" id="settingsEmail" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+
+            <div class="info-section">
+                <h3>Change Password</h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </form>
+            </div>
+
+            <div class="info-section" style="border: 2px solid #ff6b6b;">
+                <h3 style="color: #ff6b6b;">Danger Zone</h3>
+                <p style="color: #666; margin-bottom: 15px;">Once you delete your account, there is no going back.</p>
+                <button class="btn" style="background: #ff6b6b; color: #fff;" onclick="deleteAccount()">Delete Account</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CyberHub Integrated Services & Online Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+
+        let currentUser = null;
+
+        function loadUser() {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Please login to access your profile.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update profile header
+            document.getElementById('profileAvatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+            document.getElementById('profileName').textContent = currentUser.fullName;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileRole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+
+            // Update overview
+            document.getElementById('overviewName').textContent = currentUser.fullName;
+            document.getElementById('overviewEmail').textContent = currentUser.email;
+            document.getElementById('overviewPhone').textContent = currentUser.phone || 'Not provided';
+            document.getElementById('overviewJoined').textContent = new Date(currentUser.createdAt).toLocaleDateString();
+            document.getElementById('overviewRole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+
+            // Update settings form
+            document.getElementById('settingsName').value = currentUser.fullName;
+            document.getElementById('settingsPhone').value = currentUser.phone || '';
+            document.getElementById('settingsEmail').value = currentUser.email;
+
+            // Load activity
+            loadActivity();
+        }
+
+        function loadActivity() {
+            // Get orders for this user
+            const allOrders = JSON.parse(localStorage.getItem('sales') || '[]');
+            const userOrders = allOrders.filter(o => o.customer === currentUser.fullName || o.customerEmail === currentUser.email);
+
+            // Get service requests for this user
+            const allRequests = JSON.parse(localStorage.getItem('cyberhub_service_requests') || '[]');
+            const userRequests = allRequests.filter(r => r.customerEmail === currentUser.email);
+
+            // Update summary
+            document.getElementById('totalOrders').textContent = userOrders.length;
+            document.getElementById('totalRequests').textContent = userRequests.length;
+            const totalSpent = userOrders.reduce((sum, o) => sum + o.total, 0);
+            document.getElementById('totalSpent').textContent = `KES ${totalSpent.toFixed(2)}`;
+
+            // Render orders
+            renderOrders(userOrders);
+
+            // Render requests
+            renderRequests(userRequests);
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('ordersList');
+
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <p>No orders yet. Start shopping to see your orders here!</p>
+                        <a href="products.html" class="btn btn-primary" style="margin-top: 15px; display: inline-block; text-decoration: none;">Browse Products</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedOrders = [...orders].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            container.innerHTML = sortedOrders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Order #${String(order.id).padStart(6, '0')}</span>
+                        <span class="order-status status-completed">Completed</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p>
+                        <p><strong>Customer:</strong> ${order.customer}</p>
+                    </div>
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <span>${item.product} x${item.quantity}</span>
+                                <span>KES ${(item.price * item.quantity).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="order-details">
+                        <p>Subtotal: KES ${order.subtotal.toFixed(2)} | Tax: KES ${order.tax.toFixed(2)}</p>
+                    </div>
+                    <div class="order-total">Total: KES ${order.total.toFixed(2)}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderRequests(requests) {
+            const container = document.getElementById('requestsList');
+
+            if (requests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📋</div>
+                        <p>No service requests yet. Submit your first request!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by date (newest first)
+            const sortedRequests = [...requests].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            container.innerHTML = sortedRequests.map(request => `
+                <div class="request-card ${request.status}">
+                    <div class="request-header">
+                        <span class="request-title">${request.category.charAt(0).toUpperCase() + request.category.slice(1)} Service</span>
+                        <span class="order-status status-${request.status === 'in-progress' ? 'processing' : request.status === 'completed' ? 'completed' : 'pending'}">${request.status.replace('-', ' ')}</span>
+                    </div>
+                    <div class="request-details">
+                        <p><strong>Description:</strong> ${request.serviceDescription}</p>
+                        <p><strong>Submitted:</strong> ${new Date(request.createdAt).toLocaleString()}</p>
+                        ${request.estimatedCost ? `<p><strong>Estimated Cost:</strong> KES ${request.estimatedCost}</p>` : ''}
+                        ${request.notes ? `<p><strong>Notes:</strong> ${request.notes}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showNewRequestForm() {
+            document.getElementById('newRequestForm').style.display = 'block';
+        }
+
+        function hideNewRequestForm() {
+            document.getElementById('newRequestForm').style.display = 'none';
+        }
+
+        // Handle new service request
+        document.getElementById('customerRequestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newRequest = {
+                id: Date.now(),
+                customerName: currentUser.fullName,
+                customerPhone: currentUser.phone,
+                customerEmail: currentUser.email,
+                category: document.getElementById('reqService').value,
+                priority: 'normal',
+                serviceDescription: document.getElementById('reqDescription').value,
+                estimatedCost: null,
+                notes: document.getElementById('reqNotes').value,
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            const requests = JSON.parse(localStorage.getItem('cyberhub_service_requests') || '[]');
+            requests.push(newRequest);
+            localStorage.setItem('cyberhub_service_requests', JSON.stringify(requests));
+
+            hideNewRequestForm();
+            this.reset();
+            loadActivity();
+            alert('Service request submitted successfully!');
+        });
+
+        // Handle settings update
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const users = JSON.parse(localStorage.getItem('cyberhub_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+
+            if (userIndex !== -1) {
+                users[userIndex].fullName = document.getElementById('settingsName').value;
+                users[userIndex].phone = document.getElementById('settingsPhone').value;
+                users[userIndex].email = document.getElementById('settingsEmail').value;
+
+                localStorage.setItem('cyberhub_users', JSON.stringify(users));
+
+                // Update current user
+                currentUser = users[userIndex];
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                // Reload
+                loadUser();
+                alert('Profile updated successfully!');
+            }
+        });
+
+        // Handle password change
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+            if (currentPassword !== currentUser.password) {
+                alert('Current password is incorrect');
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('cyberhub_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+
+            if (userIndex !== -1) {
+                users[userIndex].password = newPassword;
+                localStorage.setItem('cyberhub_users', JSON.stringify(users));
+
+                currentUser.password = newPassword;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                this.reset();
+                alert('Password updated successfully!');
+            }
+        });
+
+        function deleteAccount() {
+            if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) return;
+
+            const users = JSON.parse(localStorage.getItem('cyberhub_users') || '[]');
+            const filteredUsers = users.filter(u => u.id !== currentUser.id);
+            localStorage.setItem('cyberhub_users', JSON.stringify(filteredUsers));
+
+            localStorage.removeItem('currentUser');
+            alert('Your account has been deleted.');
+            window.location.href = 'index.html';
+        }
+
+        // Load user on page load
+        loadUser();
+    </script>
+</body>
+</html>

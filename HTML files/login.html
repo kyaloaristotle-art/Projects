@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CyberHub Integrated Services & Online Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/Background.png);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #00bcd4;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0097a7, #00838f);
+            transform: translateY(-2px);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .login-footer a {
+            color: #00bcd4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>CyberHub Login</h1>
+            <p>Sign in to access your account</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <div class="login-footer">
+            <p>Don't have an account? <a href="register.html">Register here</a></p>
+            <p style="margin-top: 10px;"><a href="index.html">Back to Home</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('cyberhub_users') || '[]');
+            
+            // Find user
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Store current user session
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Redirect based on role
+                switch(user.role) {
+                    case 'admin':
+                        window.location.href = 'dashboard.html';
+                        break;
+                    case 'staff':
+                        window.location.href = 'pos.html';
+                        break;
+                    case 'gaming':
+                        window.location.href = 'playstation.html';
+                        break;
+                    case 'stock':
+                        window.location.href = 'products.html';
+                        break;
+                    case 'customer':
+                        window.location.href = 'profile.html';
+                        break;
+                    default:
+                        window.location.href = 'index.html';
+                }
+            } else {
+                errorMessage.textContent = 'Invalid email or password';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Create default admin user if no users exist
+        function createDefaultAdmin() {
+            const users = JSON.parse(localStorage.getItem('cyberhub_users') || '[]');
+            if (users.length === 0) {
+                const defaultAdmin = {
+                    id: 1,
+                    fullName: 'System Administrator',
+                    email: 'admin@cyberhub.com',
+                    phone: '0000000000',
+                    password: 'admin123',
+                    role: 'admin',
+                    createdAt: new Date().toISOString()
+                };
+                users.push(defaultAdmin);
+                localStorage.setItem('cyberhub_users', JSON.stringify(users));
+                console.log('Default admin account created: admin@cyberhub.com / admin123');
+            }
+        }
+
+        // Check if already logged in
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+            switch(currentUser.role) {
+                case 'admin':
+                    window.location.href = 'dashboard.html';
+                    break;
+                case 'staff':
+                    window.location.href = 'pos.html';
+                    break;
+                case 'gaming':
+                    window.location.href = 'playstation.html';
+                    break;
+                case 'stock':
+                    window.location.href = 'products.html';
+                    break;
+                default:
+                    window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize default admin
+        createDefaultAdmin();
+    </script>
+</body>
+</html>

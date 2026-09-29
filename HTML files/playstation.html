@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayStation Zone - CyberHub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/Logo.png" alt="CyberHub Logo">
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="playstation.html" class="active">PlayStation Zone</a></li>
+                    <li><a href="booking.html">Book Session</a></li>
+                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="pos.html">POS</a></li>
+                    <li><a href="expenses.html">Expenses</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="profile.html">My Profile</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="#" class="btn-auth btn-login" onclick="alert('Login coming in Phase 2!')">Login</a>
+                    <a href="#" class="btn-auth btn-register" onclick="alert('Registration coming in Phase 2!')">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Gaming & Entertainment Zone</h1>
+        <p style="text-align: center; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px;">
+            Experience the best gaming on PS5 and PS4 consoles. Book a station, choose your game, and enjoy!
+        </p>
+
+        <h2>PlayStation Gaming Services</h2>
+        <div class="gaming-section">
+            <div class="game-item">
+                <div class="feature-icon">⚽</div>
+                <h3>FIFA Gaming</h3>
+                <p>Competitive FIFA matches with friends and tournaments.</p>
+                <span class="price">KES 50/hour</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🚗</div>
+                <h3>GTA Series</h3>
+                <p>Grand Theft Auto gaming experience with open-world action.</p>
+                <span class="price">KES 50/hour</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🏎️</div>
+                <h3>Driving Games</h3>
+                <p>NFS, Forza, and other racing games available.</p>
+                <span class="price">KES 50/hour</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🗺️</div>
+                <h3>Uncharted Series</h3>
+                <p>Action-adventure gaming with Uncharted franchise.</p>
+                <span class="price">KES 50/hour</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🎮</div>
+                <h3>PS5 Next-Gen</h3>
+                <p>Experience next-generation gaming on PS5 consoles.</p>
+                <span class="price">KES 80/hour</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🎬</div>
+                <h3>Movie Nights</h3>
+                <p>Watch the latest movies on big screens with friends.</p>
+                <span class="price">KES 100/movie</span>
+            </div>
+        </div>
+
+        <h2>Game Packages</h2>
+        <div class="gaming-section">
+            <div class="game-item">
+                <div class="feature-icon">📅</div>
+                <h3>Daily Gaming Pass</h3>
+                <p>Unlimited gaming for the entire day.</p>
+                <span class="price">KES 300/day</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">📆</div>
+                <h3>Weekly Gaming Pass</h3>
+                <p>Unlimited gaming for a full week.</p>
+                <span class="price">KES 1,500/week</span>
+            </div>
+            <div class="game-item">
+                <div class="feature-icon">🏆</div>
+                <h3>Tournament Entry</h3>
+                <p>Participate in gaming tournaments with prizes.</p>
+                <span class="price">KES 200/entry</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CyberHub Integrated Services & Online Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point of Sale - CyberHub Integrated Services & Online Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/Background.png);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        main {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin: 20px auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+        }
+
+        .pos-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .pos-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stock-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .stock-warning.show {
+            display: block;
+        }
+
+        .stock-indicator {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+
+        .stock-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stock-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .pos-section h2 {
+            color: #00bcd4;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00bcd4;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #00bcd4;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #0097a7;
+        }
+
+        .btn-secondary {
+            background: #666;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-success {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+        }
+
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cart-item-price {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item-quantity button {
+            background: #00bcd4;
+            color: #fff;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .cart-item-remove {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .total-section {
+            background: #f4f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-row.grand-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00bcd4;
+            border-top: 2px solid #00bcd4;
+            padding-top: 10px;
+        }
+
+        .receipt-preview {
+            background: #fff;
+            padding: 20px;
+            border: 1px dashed #ccc;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            display: none;
+        }
+
+        .receipt-preview.show {
+            display: block;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .receipt-total {
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .pos-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/Logo.png" alt="CyberHub Logo">
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="playstation.html">PlayStation Zone</a></li>
+                    <li><a href="booking.html">Book Session</a></li>
+                    <li><a href="stations.html">Stations</a></li>
+                    <li><a href="service-requests.html">Service Requests</a></li>
+                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="pos.html" class="active">POS</a></li>
+                    <li><a href="expenses.html">Expenses</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="profile.html">My Profile</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-auth btn-login">Login</a>
+                    <a href="register.html" class="btn-auth btn-register">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Point of Sale System</h1>
+        
+        <div class="pos-container">
+            <div class="pos-section">
+                <h2>Add Item to Sale</h2>
+                <div class="stock-warning" id="stockWarning">
+                    ⚠️ Warning: Low stock items available
+                </div>
+                <form id="addItemForm">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="jewelry">Jewelry</option>
+                            <option value="gaming">Gaming Services</option>
+                            <option value="services">Cyber Services</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product">Product/Service</label>
+                        <select id="product" required>
+                            <option value="">Select Product</option>
+                        </select>
+                        <span id="stockIndicator" class="stock-indicator"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" min="1" value="1" required>
+                        <span id="availableStock" style="font-size: 12px; color: #666; margin-left: 10px;"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price (KES)</label>
+                        <input type="number" id="price" min="0" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerName">Customer Name (Optional)</label>
+                        <input type="text" id="customerName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (Optional)</label>
+                        <textarea id="notes" placeholder="Any additional notes..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+
+            <div class="pos-section">
+                <h2>Current Sale</h2>
+                <div class="cart-items" id="cartItems">
+                    <p style="text-align: center; color: #999;">No items in cart</p>
+                </div>
+
+                <div class="total-section">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">KES 0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (16%):</span>
+                        <span id="tax">KES 0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">KES 0.00</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="clearCart()">Clear Cart</button>
+                    <button class="btn btn-success" onclick="completeSale()">Complete Sale</button>
+                </div>
+
+                <div class="receipt-preview" id="receiptPreview">
+                    <div class="receipt-header">
+                        <h3>CYBERHUB</h3>
+                        <p>Integrated Services & Online Shop</p>
+                        <p id="receiptDate"></p>
+                        <p id="receiptNumber"></p>
+                    </div>
+                    <div id="receiptItems"></div>
+                    <div class="receipt-total">
+                        <div class="receipt-item">
+                            <span>Subtotal:</span>
+                            <span id="receiptSubtotal"></span>
+                        </div>
+                        <div class="receipt-item">
+                            <span>Tax (16%):</span>
+                            <span id="receiptTax"></span>
+                        </div>
+                        <div class="receipt-item">
+                            <span>TOTAL:</span>
+                            <span id="receiptTotal"></span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p>Thank you for your business!</p>
+                        <p id="receiptCustomer"></p>
+                    </div>
+                </div>
+
+                <div class="btn-group" id="printButtons" style="display: none;">
+                    <button class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
+                    <button class="btn btn-secondary" onclick="newSale()">New Sale</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CyberHub Integrated Services & Online Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+
+        // Product data with stock levels
+        const products = {
+            electronics: [
+                { name: 'Fridge Guard', price: 1500, stock: 15 },
+                { name: 'Memory Card', price: 800, stock: 25 },
+                { name: 'Phone Cover', price: 300, stock: 50 },
+                { name: 'Charger', price: 500, stock: 30 },
+                { name: 'Power Bank', price: 1200, stock: 8 },
+                { name: 'Headphones', price: 400, stock: 20 },
+                { name: 'USB Cable', price: 200, stock: 40 },
+                { name: 'Computer Mouse', price: 500, stock: 3 },
+                { name: 'Flash Drive', price: 400, stock: 35 },
+                { name: 'Adapter', price: 300, stock: 25 },
+                { name: 'Screen Protector', price: 200, stock: 45 },
+                { name: 'Extension Cable', price: 800, stock: 12 }
+            ],
+            jewelry: [
+                { name: 'Necklace', price: 500, stock: 18 },
+                { name: 'Bracelet', price: 300, stock: 22 },
+                { name: 'Earrings', price: 200, stock: 30 },
+                { name: 'Ring', price: 400, stock: 15 },
+                { name: 'Watch', price: 1000, stock: 5 },
+                { name: 'Anklet', price: 250, stock: 20 }
+            ],
+            gaming: [
+                { name: 'FIFA Gaming (1 hour)', price: 50, stock: 999 },
+                { name: 'GTA Gaming (1 hour)', price: 50, stock: 999 },
+                { name: 'Driving Games (1 hour)', price: 50, stock: 999 },
+                { name: 'Uncharted (1 hour)', price: 50, stock: 999 },
+                { name: 'PS5 Gaming (1 hour)', price: 80, stock: 999 },
+                { name: 'Movie Night', price: 100, stock: 999 },
+                { name: 'Daily Gaming Pass', price: 300, stock: 999 },
+                { name: 'Weekly Gaming Pass', price: 1500, stock: 999 },
+                { name: 'Tournament Entry', price: 200, stock: 999 }
+            ],
+            services: [
+                { name: 'Printing (B&W)', price: 10, stock: 999 },
+                { name: 'Printing (Color)', price: 20, stock: 999 },
+                { name: 'Photocopy', price: 5, stock: 999 },
+                { name: 'Scanning', price: 20, stock: 999 },
+                { name: 'Passport Photo', price: 100, stock: 999 },
+                { name: 'Lamination', price: 30, stock: 999 },
+                { name: 'KRA Services', price: 200, stock: 999 },
+                { name: 'HELB Services', price: 200, stock: 999 },
+                { name: 'eCitizen Services', price: 150, stock: 999 }
+            ]
+        };
+
+        let cart = [];
+        let receiptNum = 1;
+
+        // Update product dropdown based on category
+        document.getElementById('category').addEventListener('change', function() {
+            const category = this.value;
+            const productSelect = document.getElementById('product');
+            productSelect.innerHTML = '<option value="">Select Product</option>';
+            
+            if (products[category]) {
+                products[category].forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.name;
+                    option.textContent = product.name;
+                    option.dataset.price = product.price;
+                    option.dataset.stock = product.stock;
+                    productSelect.appendChild(option);
+                });
+            }
+            
+            updateStockWarning();
+        });
+
+        // Auto-fill price and show stock when product is selected
+        document.getElementById('product').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.dataset.price) {
+                document.getElementById('price').value = selectedOption.dataset.price;
+            }
+            if (selectedOption.dataset.stock) {
+                const stock = parseInt(selectedOption.dataset.stock);
+                const stockIndicator = document.getElementById('stockIndicator');
+                const availableStock = document.getElementById('availableStock');
+                
+                availableStock.textContent = `Available: ${stock}`;
+                
+                if (stock <= 5) {
+                    stockIndicator.textContent = 'Low Stock';
+                    stockIndicator.className = 'stock-indicator stock-low';
+                } else if (stock <= 15) {
+                    stockIndicator.textContent = 'Medium Stock';
+                    stockIndicator.className = 'stock-indicator stock-medium';
+                } else {
+                    stockIndicator.textContent = 'In Stock';
+                    stockIndicator.className = 'stock-indicator stock-high';
+                }
+            }
+        });
+
+        // Update stock warning for low stock items
+        function updateStockWarning() {
+            const category = document.getElementById('category').value;
+            const stockWarning = document.getElementById('stockWarning');
+            
+            if (products[category]) {
+                const lowStockItems = products[category].filter(p => p.stock <= 5);
+                if (lowStockItems.length > 0) {
+                    stockWarning.classList.add('show');
+                } else {
+                    stockWarning.classList.remove('show');
+                }
+            }
+        }
+
+        // Add item to cart
+        document.getElementById('addItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const category = document.getElementById('category').value;
+            const product = document.getElementById('product').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const price = parseFloat(document.getElementById('price').value);
+            const customerName = document.getElementById('customerName').value;
+            const notes = document.getElementById('notes').value;
+
+            if (!category || !product || quantity < 1 || price < 0) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+
+            // Check stock availability for physical products
+            if (category === 'electronics' || category === 'jewelry') {
+                const productData = products[category].find(p => p.name === product);
+                const existingItem = cart.find(item => item.product === product);
+                const currentQty = existingItem ? existingItem.quantity : 0;
+                
+                if (productData && (currentQty + quantity) > productData.stock) {
+                    alert(`Insufficient stock! Only ${productData.stock} units available. You already have ${currentQty} in cart.`);
+                    return;
+                }
+            }
+
+            const existingItem = cart.find(item => item.product === product);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    category,
+                    product,
+                    quantity,
+                    price,
+                    customerName,
+                    notes
+                });
+            }
+
+            updateCart();
+            this.reset();
+            document.getElementById('category').value = category; // Keep category selected
+            document.getElementById('category').dispatchEvent(new Event('change'));
+        });
+
+        function updateCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align: center; color: #999;">No items in cart</p>';
+                document.getElementById('subtotal').textContent = 'KES 0.00';
+                document.getElementById('tax').textContent = 'KES 0.00';
+                document.getElementById('total').textContent = 'KES 0.00';
+                return;
+            }
+
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.product}</div>
+                        <div class="cart-item-price">KES ${item.price.toFixed(2)} each</div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button onclick="updateQuantity(${index}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeItem(${index})">Remove</button>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.16;
+            const total = subtotal + tax;
+
+            document.getElementById('subtotal').textContent = `KES ${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `KES ${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `KES ${total.toFixed(2)}`;
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCart();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear the cart?')) {
+                cart = [];
+                updateCart();
+            }
+        }
+
+        function completeSale() {
+            if (cart.length === 0) {
+                alert('Please add items to the cart first.');
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.16;
+            const total = subtotal + tax;
+            const customerName = document.getElementById('customerName').value || 'Walk-in Customer';
+
+            // Deduct stock for physical products
+            cart.forEach(item => {
+                if (item.category === 'electronics' || item.category === 'jewelry') {
+                    const productData = products[item.category].find(p => p.name === item.product);
+                    if (productData) {
+                        productData.stock -= item.quantity;
+                    }
+                }
+            });
+
+            // Save updated stock to localStorage
+            localStorage.setItem('productStock', JSON.stringify(products));
+
+            // Generate receipt
+            const now = new Date();
+            document.getElementById('receiptDate').textContent = `Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            document.getElementById('receiptNumber').textContent = `Receipt #: ${String(receiptNum).padStart(6, '0')}`;
+            document.getElementById('receiptCustomer').textContent = `Customer: ${customerName}`;
+
+            document.getElementById('receiptItems').innerHTML = cart.map(item => `
+                <div class="receipt-item">
+                    <span>${item.product} x${item.quantity}</span>
+                    <span>KES ${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('receiptSubtotal').textContent = `KES ${subtotal.toFixed(2)}`;
+            document.getElementById('receiptTax').textContent = `KES ${tax.toFixed(2)}`;
+            document.getElementById('receiptTotal').textContent = `KES ${total.toFixed(2)}`;
+
+            document.getElementById('receiptPreview').classList.add('show');
+            document.getElementById('printButtons').style.display = 'flex';
+
+            // Save sale to localStorage
+            const sale = {
+                id: receiptNum,
+                date: now.toISOString(),
+                customer: customerName,
+                items: cart,
+                subtotal,
+                tax,
+                total
+            };
+
+            const sales = JSON.parse(localStorage.getItem('sales') || '[]');
+            sales.push(sale);
+            localStorage.setItem('sales', JSON.stringify(sales));
+
+            receiptNum++;
+        }
+
+        function printReceipt() {
+            const receiptContent = document.getElementById('receiptPreview').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Receipt - CyberHub Integrated Services & Online Shop</title>
+                    <style>
+                        body { font-family: 'Courier New', monospace; font-size: 12px; padding: 20px; }
+                        .receipt-header { text-align: center; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 10px; }
+                        .receipt-item { display: flex; justify-content: space-between; margin-bottom: 5px; }
+                        .receipt-total { border-top: 1px solid #000; padding-top: 10px; margin-top: 10px; font-weight: bold; }
+                    </style>
+                </head>
+                <body>${receiptContent}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function newSale() {
+            cart = [];
+            updateCart();
+            document.getElementById('receiptPreview').classList.remove('show');
+            document.getElementById('printButtons').style.display = 'none';
+            document.getElementById('addItemForm').reset();
+        }
+
+        // Load stock from localStorage on page load
+        function loadStock() {
+            const savedStock = localStorage.getItem('productStock');
+            if (savedStock) {
+                const stockData = JSON.parse(savedStock);
+                // Merge saved stock with default products
+                Object.keys(stockData).forEach(category => {
+                    if (products[category]) {
+                        products[category].forEach(product => {
+                            const savedProduct = stockData[category].find(p => p.name === product.name);
+                            if (savedProduct) {
+                                product.stock = savedProduct.stock;
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        // Initialize
+        loadStock();
+    </script>
+</body>
+</html>

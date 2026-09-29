@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CyberHub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu">
+                <div class="logo">
+                    <img src="images/Logo.png" alt="CyberHub Logo">
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="playstation.html">PlayStation Zone</a></li>
+                    <li><a href="booking.html">Book Session</a></li>
+                    <li><a href="inventory.html">Inventory</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="about.html" class="active">About Us</a></li>
+                    <li><a href="pos.html">POS</a></li>
+                    <li><a href="expenses.html">Expenses</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="profile.html">My Profile</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="#" class="btn-auth btn-login" onclick="alert('Login coming in Phase 2!')">Login</a>
+                    <a href="#" class="btn-auth btn-register" onclick="alert('Registration coming in Phase 2!')">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="about-hero">
+            <h2>About CyberHub</h2>
+            <p>CyberHub Integrated Services & Online Shop is your one-stop destination for digital services, printing, gaming, electronics, and online shopping. We bring together everything you need under one roof.</p>
+        </div>
+
+        <div class="page-section">
+            <h2>What We Offer</h2>
+            <div class="card-grid">
+                <div class="info-card">
+                    <h3>🖨️ Cyber Services</h3>
+                    <p>High-speed internet browsing, document typing, printing (B&W and color), scanning, photocopying, lamination, and binding services.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🌐 Online Services</h3>
+                    <p>Government portal assistance (KRA, HELB, eCitizen), online applications, CV services, email/account assistance, and form filling.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🎮 PlayStation Gaming</h3>
+                    <p>PS5 and PS4 gaming stations with the latest titles including FIFA, GTA, Uncharted, and more. Hourly rates and gaming passes available.</p>
+                </div>
+                <div class="info-card">
+                    <h3>📱 Electronics & Accessories</h3>
+                    <p>Flash disks, memory cards, USB cables, chargers, earphones, headphones, keyboards, mice, HDMI cables, and more quality accessories.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-section">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <h3>Fast Service</h3>
+                    <p>Quick turnaround on all printing, scanning, and document services.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💎</div>
+                    <h3>Quality Products</h3>
+                    <p>We stock only genuine electronics and accessories at competitive prices.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Customer First</h3>
+                    <p>Your satisfaction is our priority. We go the extra mile to help.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔒</div>
+                    <h3>Trust & Security</h3>
+                    <p>Your documents and data are handled with utmost confidentiality.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-section">
+            <h2>Why Choose CyberHub?</h2>
+            <div class="card-grid">
+                <div class="info-card">
+                    <h3>All-in-One Platform</h3>
+                    <p>Unlike traditional cyber cafés, we combine services, products, and gaming in a single integrated platform.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Convenient Location</h3>
+                    <p>Easily accessible with a welcoming environment for work, gaming, and shopping.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Affordable Pricing</h3>
+                    <p>Competitive rates for all services and products, with regular promotions and discounts.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 CyberHub Integrated Services & Online Shop. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
